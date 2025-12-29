@@ -98,12 +98,12 @@
             object-fit: cover;
         }
 
-        /* White play button with no background */
+        /* White play button - center bottom */
         .play-button {
             position: absolute;
-            top: 50%;
-            left: 30%;
-            transform: translate(-50%, -50%);
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 80px;
             height: 80px;
             display: flex;
@@ -113,7 +113,7 @@
         }
 
         .thumbnail-overlay:hover .play-button {
-            transform: translate(-50%, -50%) scale(1.1);
+            transform: translateX(-50%) scale(1.1);
         }
 
         .play-button svg {
@@ -164,6 +164,7 @@
             .play-button {
                 width: 60px;
                 height: 60px;
+                bottom: 20px;
             }
             .play-button svg {
                 width: 60px;
