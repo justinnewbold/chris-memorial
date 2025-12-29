@@ -14,21 +14,26 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: 'Lato', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             color: #fff;
-            padding: 20px;
         }
 
-        .memorial-container {
-            max-width: 900px;
-            width: 100%;
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
             text-align: center;
         }
 
@@ -63,42 +68,77 @@
         .video-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+            background: #000;
         }
 
         video {
             width: 100%;
             display: block;
             background: #000;
+            cursor: pointer;
         }
 
-        .unmute-prompt {
+        .play-overlay {
             position: absolute;
-            bottom: 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .play-overlay:hover {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .play-overlay.hidden {
+            display: none;
+        }
+
+        .play-button {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .play-overlay:hover .play-button {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+        }
+
+        .play-button svg {
+            width: 40px;
+            height: 40px;
+            margin-left: 8px;
+            fill: #1a1a2e;
+        }
+
+        .play-text {
+            position: absolute;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
             color: #fff;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .unmute-prompt:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .unmute-prompt.hidden {
-            opacity: 0;
-            pointer-events: none;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
         .quote {
@@ -109,12 +149,12 @@
             color: #b8c5d6;
             line-height: 1.8;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            padding: 0 20px;
         }
 
         .footer {
-            margin-top: 40px;
+            padding: 30px 20px;
+            text-align: center;
             font-size: 0.9rem;
             color: #6b7c93;
         }
@@ -137,13 +177,25 @@
             }
             .quote {
                 font-size: 1.1rem;
-                padding: 0 10px;
+            }
+            .play-button {
+                width: 80px;
+                height: 80px;
+            }
+            .play-button svg {
+                width: 32px;
+                height: 32px;
+                margin-left: 6px;
+            }
+            .play-text {
+                font-size: 1rem;
+                bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="memorial-container">
+    <main class="hero">
         <header class="header">
             <h1 class="name">Chris Francis Newbold</h1>
             <p class="dates">December 28, 1943 — April 9, 2020</p>
@@ -152,12 +204,17 @@
         <div class="divider"></div>
 
         <div class="video-container">
-            <video id="tribute-video" autoplay loop playsinline muted>
-                <source src="tribute.mp4" type="video/mp4">
+            <video id="tribute-video" playsinline controls>
+                <source src="https://og8hz9aar6ozrqon.public.blob.vercel-storage.com/tribute.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <div class="unmute-prompt" id="unmute-btn">
-                🔊 Click to unmute
+            <div class="play-overlay" id="play-overlay">
+                <div class="play-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+                <span class="play-text">Play Tribute Video</span>
             </div>
         </div>
 
@@ -165,39 +222,38 @@
             "He lived a full and adventurous life and his inspiration as a father 
             and grandfather will be felt for generations."
         </p>
+    </main>
 
-        <div class="divider"></div>
-
-        <footer class="footer">
-            <p>Forever in our hearts</p>
-            <p style="margin-top: 10px;">
-                <a href="https://www.lindquistmortuary.com/obituaries/chris-newbold" target="_blank">
-                    View Full Obituary
-                </a>
-            </p>
-        </footer>
-    </div>
+    <footer class="footer">
+        <p>Forever in our hearts</p>
+        <p style="margin-top: 10px;">
+            <a href="https://www.lindquistmortuary.com/obituaries/chris-newbold" target="_blank">
+                View Full Obituary
+            </a>
+        </p>
+    </footer>
 
     <script>
         const video = document.getElementById('tribute-video');
-        const unmuteBtn = document.getElementById('unmute-btn');
+        const playOverlay = document.getElementById('play-overlay');
 
-        unmuteBtn.addEventListener('click', function() {
-            video.muted = false;
-            unmuteBtn.classList.add('hidden');
+        playOverlay.addEventListener('click', function() {
+            playOverlay.classList.add('hidden');
+            video.play();
         });
 
-        video.addEventListener('click', function() {
-            if (video.muted) {
-                video.muted = false;
-                unmuteBtn.classList.add('hidden');
+        video.addEventListener('play', function() {
+            playOverlay.classList.add('hidden');
+        });
+
+        video.addEventListener('pause', function() {
+            if (video.currentTime === 0 || video.ended) {
+                playOverlay.classList.remove('hidden');
             }
         });
 
-        video.addEventListener('volumechange', function() {
-            if (!video.muted) {
-                unmuteBtn.classList.add('hidden');
-            }
+        video.addEventListener('ended', function() {
+            playOverlay.classList.remove('hidden');
         });
     </script>
 </body>
