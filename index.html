@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Loving Memory of Chris Newbold</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .memorial-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .dates {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #b8c5d6;
+            letter-spacing: 2px;
+        }
+
+        .divider {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b8c5d6, transparent);
+            margin: 25px auto;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+            background: #000;
+        }
+
+        .unmute-prompt {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .unmute-prompt:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .unmute-prompt.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .quote {
+            margin-top: 40px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #b8c5d6;
+            line-height: 1.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #6b7c93;
+        }
+
+        .footer a {
+            color: #8fa4bf;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .name {
+                font-size: 2.2rem;
+            }
+            .dates {
+                font-size: 1.1rem;
+            }
+            .quote {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="memorial-container">
+        <header class="header">
+            <h1 class="name">Chris Francis Newbold</h1>
+            <p class="dates">December 28, 1943 — April 9, 2020</p>
+        </header>
+
+        <div class="divider"></div>
+
+        <div class="video-container">
+            <video id="tribute-video" autoplay loop playsinline muted>
+                <source src="tribute.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="unmute-prompt" id="unmute-btn">
+                🔊 Click to unmute
+            </div>
+        </div>
+
+        <p class="quote">
+            "He lived a full and adventurous life and his inspiration as a father 
+            and grandfather will be felt for generations."
+        </p>
+
+        <div class="divider"></div>
+
+        <footer class="footer">
+            <p>Forever in our hearts</p>
+            <p style="margin-top: 10px;">
+                <a href="https://www.lindquistmortuary.com/obituaries/chris-newbold" target="_blank">
+                    View Full Obituary
+                </a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const video = document.getElementById('tribute-video');
+        const unmuteBtn = document.getElementById('unmute-btn');
+
+        unmuteBtn.addEventListener('click', function() {
+            video.muted = false;
+            unmuteBtn.classList.add('hidden');
+        });
+
+        video.addEventListener('click', function() {
+            if (video.muted) {
+                video.muted = false;
+                unmuteBtn.classList.add('hidden');
+            }
+        });
+
+        video.addEventListener('volumechange', function() {
+            if (!video.muted) {
+                unmuteBtn.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
