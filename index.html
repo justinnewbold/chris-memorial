@@ -130,13 +130,35 @@
             overflow: hidden;
             box-shadow: 0 25px 80px rgba(0,0,0,0.6);
             background: #000;
+            aspect-ratio: 16/9;
         }
 
         video {
             width: 100%;
+            height: 100%;
             display: block;
             background: #000;
             cursor: pointer;
+            object-fit: contain;
+        }
+
+        /* Loading spinner for video */
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .thumbnail-overlay {
@@ -720,13 +742,18 @@
         </header>
 
         <div class="video-container">
-            <video id="tribute-video" playsinline controls>
+            <video id="tribute-video" 
+                   playsinline 
+                   controls 
+                   preload="metadata"
+                   poster="images/video-poster.png"
+                   webkit-playsinline>
                 <source src="https://og8hz9aar6ozrqon.public.blob.vercel-storage.com/tribute.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             
             <div class="thumbnail-overlay" id="thumbnail-overlay">
-                <img src="images/thumbnail.jpg" alt="Click to play tribute video">
+                <img src="images/video-poster.png" alt="Click to play tribute video">
                 <div class="play-button">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5v14l11-7z"/>
@@ -958,23 +985,63 @@
         const video = document.getElementById('tribute-video');
         const thumbnailOverlay = document.getElementById('thumbnail-overlay');
 
-        thumbnailOverlay.addEventListener('click', function() {
+        // Handle thumbnail click - plays video
+        thumbnailOverlay.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             thumbnailOverlay.classList.add('hidden');
-            video.play();
+            
+            // Play with promise handling for mobile browsers
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.then(function() {
+                    // Playback started successfully
+                    console.log('Video playing');
+                }).catch(function(error) {
+                    // Auto-play was prevented or failed
+                    console.log('Play failed:', error);
+                    // Show controls so user can manually play
+                    video.controls = true;
+                    // Keep thumbnail hidden since user clicked
+                });
+            }
         });
 
+        // When video starts playing, hide thumbnail
         video.addEventListener('play', function() {
             thumbnailOverlay.classList.add('hidden');
         });
 
+        // When video is paused at the beginning or ends, show thumbnail again
         video.addEventListener('pause', function() {
             if (video.currentTime === 0 || video.ended) {
                 thumbnailOverlay.classList.remove('hidden');
             }
         });
 
+        // When video ends, show thumbnail again
         video.addEventListener('ended', function() {
             thumbnailOverlay.classList.remove('hidden');
+            video.currentTime = 0; // Reset to beginning
+        });
+
+        // Handle video errors
+        video.addEventListener('error', function(e) {
+            console.error('Video error:', e);
+            // Show error message to user
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;text-align:center;padding:20px;';
+            errorDiv.innerHTML = 'Video could not be loaded.<br><a href="https://og8hz9aar6ozrqon.public.blob.vercel-storage.com/tribute.mp4" style="color:#f39c12;" target="_blank">Click here to watch directly</a>';
+            video.parentElement.appendChild(errorDiv);
+        });
+
+        // Handle loading states
+        video.addEventListener('waiting', function() {
+            console.log('Video buffering...');
+        });
+
+        video.addEventListener('canplay', function() {
+            console.log('Video ready to play');
         });
 
         // ============================================
