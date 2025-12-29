@@ -37,6 +37,27 @@
             text-align: center;
         }
 
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .dates {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #b8c5d6;
+            letter-spacing: 4px;
+        }
+
         .video-container {
             position: relative;
             width: 100%;
@@ -55,7 +76,7 @@
             cursor: pointer;
         }
 
-        /* Simple thumbnail overlay using the uploaded image */
+        /* Thumbnail overlay */
         .thumbnail-overlay {
             position: absolute;
             top: 0;
@@ -75,6 +96,31 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* White play button with no background */
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail-overlay:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button svg {
+            width: 80px;
+            height: 80px;
+            fill: rgba(255, 255, 255, 0.9);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
         }
 
         .quote {
@@ -105,24 +151,48 @@
         }
 
         @media (max-width: 600px) {
+            .name {
+                font-size: 2.2rem;
+            }
+            .dates {
+                font-size: 1.3rem;
+            }
             .quote {
                 font-size: 1.1rem;
                 margin-top: 30px;
+            }
+            .play-button {
+                width: 60px;
+                height: 60px;
+            }
+            .play-button svg {
+                width: 60px;
+                height: 60px;
             }
         }
     </style>
 </head>
 <body>
     <main class="hero">
+        <header class="header">
+            <h1 class="name">Chris Francis Newbold</h1>
+            <p class="dates">1943 — 2020</p>
+        </header>
+
         <div class="video-container">
             <video id="tribute-video" playsinline controls>
                 <source src="https://og8hz9aar6ozrqon.public.blob.vercel-storage.com/tribute.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             
-            <!-- Thumbnail overlay using the memorial-style image -->
+            <!-- Thumbnail overlay -->
             <div class="thumbnail-overlay" id="thumbnail-overlay">
-                <img src="images/thumbnail.jpg" alt="Click to play tribute video for Chris Francis Newbold">
+                <img src="images/thumbnail.jpg" alt="Click to play tribute video">
+                <div class="play-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
             </div>
         </div>
 
