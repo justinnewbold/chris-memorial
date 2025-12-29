@@ -92,13 +92,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.3);
             cursor: pointer;
             transition: background 0.3s ease;
         }
 
         .play-overlay:hover {
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.15);
         }
 
         .play-overlay.hidden {
@@ -204,7 +204,7 @@
         <div class="divider"></div>
 
         <div class="video-container">
-            <video id="tribute-video" playsinline controls>
+            <video id="tribute-video" playsinline controls poster="images/thumbnail.jpg">
                 <source src="https://og8hz9aar6ozrqon.public.blob.vercel-storage.com/tribute.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
