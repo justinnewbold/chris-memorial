@@ -33,15 +33,41 @@
             color: #333;
         }
         
-        .logout-btn {
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .settings-btn, .refresh-btn, .logout-btn {
             padding: 10px 20px;
-            background: #dc3545;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .settings-btn {
+            background: #6c757d;
+        }
+        
+        .settings-btn:hover {
+            background: #5a6268;
+        }
+        
+        .refresh-btn {
+            background: #667eea;
+        }
+        
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
         }
         
         .logout-btn:hover {
@@ -200,22 +226,6 @@
             padding: 40px;
             color: #666;
         }
-        
-        .refresh-btn {
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            margin-left: 10px;
-        }
-        
-        .refresh-btn:hover {
-            background: #5568d3;
-        }
     </style>
 </head>
 <body>
@@ -224,7 +234,8 @@
             <h1>📊 Admin Dashboard</h1>
             <p style="color: #666; margin-top: 4px;">Manage memorial photos</p>
         </div>
-        <div>
+        <div class="header-actions">
+            <a href="/admin/settings.html" class="settings-btn">⚙️ Settings</a>
             <button class="refresh-btn" onclick="loadPendingPhotos()">🔄 Refresh</button>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
