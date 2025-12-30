@@ -149,66 +149,6 @@
             padding: 0 20px;
         }
 
-        /* Candle Section */
-        #candles {
-            background: rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        .candle-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .candle-display {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            max-width: 400px;
-        }
-
-        .candle {
-            font-size: 2.5rem;
-            animation: flicker 2s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        .candle-count {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            color: #b8c5d6;
-        }
-
-        .light-candle-btn {
-            background: linear-gradient(135deg, #f39c12, #e74c3c);
-            border: none;
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-family: 'Lato', sans-serif;
-        }
-
-        .light-candle-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.4);
-        }
-
-        .light-candle-btn:disabled {
-            background: #666;
-            cursor: not-allowed;
-            transform: none;
-        }
-
         /* Gallery Section */
         .gallery-grid {
             display: grid;
@@ -729,7 +669,6 @@
     <!-- Navigation -->
     <nav class="nav">
         <a href="#hero">Home</a>
-        <a href="#candles">Light a Candle</a>
         <a href="#gallery">Photos</a>
         <a href="#timeline">Life Story</a>
         <a href="#memories">Memories</a>
@@ -756,24 +695,6 @@
         </p>
     </section>
 
-    <!-- Candle Section -->
-    <section id="candles">
-        <h2 class="section-title">Light a Candle</h2>
-        <p class="section-subtitle">Honor his memory with a virtual candle</p>
-        <div class="divider"></div>
-
-        <div class="candle-container">
-            <div class="candle-display" id="candle-display">
-                🕯️
-            </div>
-            <p class="candle-count"><span id="candle-count">0</span> candles lit in his memory</p>
-            <button class="light-candle-btn" id="light-candle-btn" onclick="lightCandle()">
-                🕯️ Light a Candle
-            </button>
-        </div>
-    </section>
-
-    <!-- Photo Gallery -->
     <section id="gallery">
         <h2 class="section-title">Photo Gallery</h2>
         <p class="section-subtitle">Cherished moments through the years</p>
@@ -985,70 +906,6 @@
         }
 
         // ============================================
-        // CANDLE LIGHTING
-        // ============================================
-        let candleCount = 0;
-        const candleKey = 'chris_memorial_candle_lit';
-
-        async function loadCandles() {
-            if (supabase) {
-                try {
-                    const { data, error } = await supabase
-                        .from('candles')
-                        .select('count')
-                        .eq('memorial_id', 'chris-newbold')
-                        .single();
-                    
-                    if (data) {
-                        candleCount = data.count;
-                        updateCandleDisplay();
-                    }
-                } catch (e) {
-                    console.log('Using local candle count');
-                    candleCount = parseInt(localStorage.getItem('chris_candle_count') || '47');
-                    updateCandleDisplay();
-                }
-            } else {
-                candleCount = parseInt(localStorage.getItem('chris_candle_count') || '47');
-                updateCandleDisplay();
-            }
-
-            if (localStorage.getItem(candleKey)) {
-                document.getElementById('light-candle-btn').disabled = true;
-                document.getElementById('light-candle-btn').textContent = '✓ Candle Lit';
-            }
-        }
-
-        async function lightCandle() {
-            if (localStorage.getItem(candleKey)) return;
-
-            candleCount++;
-            localStorage.setItem(candleKey, 'true');
-            localStorage.setItem('chris_candle_count', candleCount.toString());
-            
-            if (supabase) {
-                try {
-                    await supabase
-                        .from('candles')
-                        .upsert({ memorial_id: 'chris-newbold', count: candleCount });
-                } catch (e) {
-                    console.log('Candle saved locally');
-                }
-            }
-
-            updateCandleDisplay();
-            document.getElementById('light-candle-btn').disabled = true;
-            document.getElementById('light-candle-btn').textContent = '✓ Candle Lit';
-        }
-
-        function updateCandleDisplay() {
-            document.getElementById('candle-count').textContent = candleCount;
-            const displayCount = Math.min(candleCount, 10);
-            document.getElementById('candle-display').innerHTML = '🕯️'.repeat(displayCount);
-        }
-
-        // ============================================
-        // MEMORIES
         // ============================================
         async function loadMemories() {
             if (supabase) {
@@ -1161,7 +1018,6 @@
         // INITIALIZE
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            loadCandles();
             loadMemories();
         });
     
