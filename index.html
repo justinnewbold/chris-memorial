@@ -536,6 +536,193 @@
                 font-size: 2rem;
             }
         }
+    
+        /* Photo Upload Section */
+        .upload-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .file-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .upload-input {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .upload-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .upload-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .upload-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .upload-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .upload-status {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .upload-status.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4caf50;
+        }
+
+        .upload-status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+        }
+
+        /* User Photos Gallery */
+        .user-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .user-photo-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .user-photo-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-photo-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .user-photo-info {
+            padding: 15px;
+        }
+
+        .user-photo-caption {
+            color: #b8c5d6;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .user-photo-meta {
+            font-size: 0.85rem;
+            color: rgba(184, 197, 214, 0.7);
+        }
+
+        .user-photo-uploader {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: #b8c5d6;
+        }
+
+        .empty-gallery {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(184, 197, 214, 0.7);
+            font-size: 1.1rem;
+        }
+
     </style>
 </head>
 <body>
@@ -609,6 +796,59 @@
                 <img src="images/baptism.jpg" alt="Baptism ceremony">
                 <div class="caption">A man of faith</div>
             </div>
+        </div>
+    </section>
+
+
+    <!-- Share Your Photos Section -->
+    <section id="upload-photos">
+        <h2 class="section-title">Share Your Photos</h2>
+        <p class="section-subtitle">Upload your cherished memories with Chris</p>
+        <div class="divider"></div>
+
+        <div class="upload-container">
+            <form id="photo-upload-form" class="upload-form" onsubmit="uploadPhoto(event)">
+                <div class="file-input-wrapper">
+                    <input type="file" id="photo-file" accept="image/*" required onchange="previewPhoto(this)">
+                    <label for="photo-file" class="file-input-label">
+                        📸 Choose Photo
+                    </label>
+                </div>
+                <div id="file-preview" class="file-preview"></div>
+                
+                <input 
+                    type="text" 
+                    id="uploader-name" 
+                    class="upload-input" 
+                    placeholder="Your name *" 
+                    required 
+                    maxlength="255">
+                
+                <textarea 
+                    id="photo-caption" 
+                    class="upload-input upload-textarea" 
+                    placeholder="Share a memory or caption (optional)" 
+                    maxlength="1000"></textarea>
+                
+                <button type="submit" class="upload-btn" id="upload-btn">
+                    Upload Photo
+                </button>
+                
+                <div id="upload-status" class="upload-status"></div>
+            </form>
+        </div>
+
+        <p class="section-subtitle" style="margin-top: 40px;">Photos shared by family and friends will appear here after review</p>
+    </section>
+
+    <!-- User Photos Gallery -->
+    <section id="user-photos-gallery">
+        <h2 class="section-title">Community Photos</h2>
+        <p class="section-subtitle">Memories shared by family and friends</p>
+        <div class="divider"></div>
+
+        <div id="user-photos-container" class="loading-spinner">
+            Loading photos...
         </div>
     </section>
 
@@ -924,6 +1164,176 @@
             loadCandles();
             loadMemories();
         });
+    
+        // Photo Upload Functions
+        let selectedPhotoFile = null;
+
+        function previewPhoto(input) {
+            const preview = document.getElementById('file-preview');
+            const file = input.files[0];
+            
+            if (file) {
+                // Validate file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Photo is too large. Maximum size is 10MB.');
+                    input.value = '';
+                    preview.innerHTML = '';
+                    return;
+                }
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    input.value = '';
+                    preview.innerHTML = '';
+                    return;
+                }
+
+                selectedPhotoFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <p style="color: #4caf50;">✓ Photo selected: ${file.name}</p>
+                        <img src="${e.target.result}" alt="Preview">
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function uploadPhoto(event) {
+            event.preventDefault();
+            
+            const statusEl = document.getElementById('upload-status');
+            const uploadBtn = document.getElementById('upload-btn');
+            
+            if (!selectedPhotoFile) {
+                showUploadStatus('Please select a photo first', 'error');
+                return;
+            }
+
+            try {
+                uploadBtn.disabled = true;
+                uploadBtn.textContent = 'Uploading...';
+                statusEl.style.display = 'none';
+
+                // Read file as base64
+                const reader = new FileReader();
+                const base64Promise = new Promise((resolve, reject) => {
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(selectedPhotoFile);
+                });
+
+                const imageData = await base64Promise;
+                const uploaderName = document.getElementById('uploader-name').value.trim();
+                const caption = document.getElementById('photo-caption').value.trim();
+
+                // Upload to API
+                const response = await fetch('/api/photos/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: imageData,
+                        uploaderName: uploaderName,
+                        caption: caption || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showUploadStatus(data.message || 'Photo uploaded successfully! It will appear after review.', 'success');
+                    // Reset form
+                    document.getElementById('photo-upload-form').reset();
+                    document.getElementById('file-preview').innerHTML = '';
+                    selectedPhotoFile = null;
+                } else {
+                    showUploadStatus(data.error || 'Failed to upload photo', 'error');
+                }
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                showUploadStatus('Failed to upload photo. Please try again.', 'error');
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = 'Upload Photo';
+            }
+        }
+
+        function showUploadStatus(message, type) {
+            const statusEl = document.getElementById('upload-status');
+            statusEl.textContent = message;
+            statusEl.className = `upload-status ${type}`;
+            statusEl.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Load user-uploaded photos
+        async function loadUserPhotos() {
+            const container = document.getElementById('user-photos-container');
+            
+            try {
+                const response = await fetch('/api/photos/list');
+                const data = await response.json();
+
+                if (data.success && data.photos.length > 0) {
+                    container.innerHTML = '<div class="user-photos-grid"></div>';
+                    const grid = container.querySelector('.user-photos-grid');
+                    
+                    data.photos.forEach(photo => {
+                        const photoEl = document.createElement('div');
+                        photoEl.className = 'user-photo-item';
+                        photoEl.onclick = () => openLightbox(photo.blob_url);
+                        
+                        const uploadDate = new Date(photo.uploaded_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        
+                        photoEl.innerHTML = `
+                            <img src="${photo.blob_url}" alt="Photo by ${photo.uploader_name}" loading="lazy">
+                            <div class="user-photo-info">
+                                ${photo.caption ? `<div class="user-photo-caption">${escapeHtml(photo.caption)}</div>` : ''}
+                                <div class="user-photo-meta">
+                                    Shared by <span class="user-photo-uploader">${escapeHtml(photo.uploader_name)}</span>
+                                    <br>${uploadDate}
+                                </div>
+                            </div>
+                        `;
+                        
+                        grid.appendChild(photoEl);
+                    });
+                } else {
+                    container.innerHTML = '<div class="empty-gallery">No photos have been shared yet. Be the first to upload a memory!</div>';
+                }
+
+            } catch (error) {
+                console.error('Error loading photos:', error);
+                container.innerHTML = '<div class="empty-gallery">Unable to load photos at this time.</div>';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load user photos when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserPhotos();
+        });
+
     </script>
 </body>
 </html>
+
